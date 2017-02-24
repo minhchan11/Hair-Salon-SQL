@@ -12,5 +12,14 @@ namespace HairSalon
     private DateTime _date;
     private int _stylistId;
 
+    public Client(string Name, string Request, DateTime Date, int StylistId, int Id = 0)
+    {
+      _id = Id;
+      _name = Name;
+      _request = Request;
+      _date = Date;
+      _stylistId = StylistId;
+    }
+
   }
 }
