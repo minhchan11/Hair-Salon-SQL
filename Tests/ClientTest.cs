@@ -118,6 +118,22 @@ namespace HairSalon
     }
 
     [Fact]
+    public void UpdateRequest_OneClient_NewRequest()
+    {
+      //Arrange
+      DateTime testDate = new DateTime(2016,4,30);
+      string originalRequest = "curly";
+      Client testClient = new Client("Wendys", originalRequest, testDate, 1);
+      testClient.Save();
+      string newRequest = "blonde";
+      testClient.UpdateRequest(newRequest);
+      //Act
+      string outputRequest = testClient.GetRequest();
+      //Assert
+      Assert.Equal(newRequest, outputRequest);
+    }
+
+    [Fact]
     public void UpdateDate_OneClient_NewDate()
     {
       //Arrange
