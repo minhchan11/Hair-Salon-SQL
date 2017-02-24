@@ -24,6 +24,9 @@ namespace HairSalon
       Assert.Equal(firstClient,secondClient);
     }
 
-
+    public void Dispose()
+    {
+      Client.DeleteAll();
+    }
   }
 }

@@ -26,7 +26,7 @@ namespace HairSalon
       return _id;
     }
 
-    public int SetId(int newId)
+    public void SetId(int newId)
     {
       _id = newId;
     }
@@ -83,6 +83,15 @@ namespace HairSalon
         bool stylistIdEquality = (this.GetStylistId() == newClient.GetStylistId());
         return (idEquality && nameEquality && requestEquality && dateEquality && stylistIdEquality);
       }
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM clients;", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }
