@@ -85,38 +85,83 @@ namespace HairSalon
       }
     }
 
-      public static List<Client> GetAll()
+    public static List<Client> GetAll()
+     {
+       List<Client> allClients = new List<Client>{};
+
+       SqlConnection conn = DB.Connection();
+       conn.Open();
+
+       SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([date] as datetime) asc;", conn);
+       SqlDataReader rdr = cmd.ExecuteReader();
+
+       while(rdr.Read())
        {
-         List<Client> allClients = new List<Client>{};
-
-         SqlConnection conn = DB.Connection();
-         conn.Open();
-
-         SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([date] as datetime) asc;", conn);
-         SqlDataReader rdr = cmd.ExecuteReader();
-
-         while(rdr.Read())
-         {
-           int id = rdr.GetInt32(0);
-           string name = rdr.GetString(1);
-           string request = rdr.GetString(2);
-           DateTime date = rdr.GetDateTime(3);
-           int stylistId = rdr.GetInt32(4);
-           Client newClient = new Client(name, request, date, stylistId, id);
-           allClients.Add(newClient);
-         }
-
-         if (rdr != null)
-         {
-           rdr.Close();
-         }
-         if (conn != null)
-         {
-           conn.Close();
-         }
-
-         return allClients;
+         int id = rdr.GetInt32(0);
+         string name = rdr.GetString(1);
+         string request = rdr.GetString(2);
+         DateTime date = rdr.GetDateTime(3);
+         int stylistId = rdr.GetInt32(4);
+         Client newClient = new Client(name, request, date, stylistId, id);
+         allClients.Add(newClient);
        }
+
+       if (rdr != null)
+       {
+         rdr.Close();
+       }
+       if (conn != null)
+       {
+         conn.Close();
+       }
+
+       return allClients;
+     }
+
+     public void Save()
+     {
+       SqlConnection conn = DB.Connection();
+       conn.Open();
+
+       SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, request, date, stylist_id) OUTPUT INSERTED.id VALUES (@ClientName, @ClientFavDish, @ClientDate, @ClientStylistId);", conn);
+
+       SqlParameter nameParameter = new SqlParameter();
+       nameParameter.ParameterName = "@ClientName";
+       nameParameter.Value = this.GetName();
+
+       SqlParameter requestParameter = new SqlParameter();
+       requestParameter.ParameterName = "@ClientFavDish";
+       requestParameter.Value = this.GetRequest();
+
+       SqlParameter dateParameter = new SqlParameter();
+       dateParameter.ParameterName = "@ClientDate";
+       dateParameter.Value = this.GetDate();
+
+       SqlParameter stylistIdParameter = new SqlParameter();
+       stylistIdParameter.ParameterName = "@ClientStylistId";
+       stylistIdParameter.Value = this.GetStylistId();
+
+       cmd.Parameters.Add(nameParameter);
+       cmd.Parameters.Add(requestParameter);
+       cmd.Parameters.Add(dateParameter);
+       cmd.Parameters.Add(stylistIdParameter);
+
+       SqlDataReader rdr = cmd.ExecuteReader();
+
+       while(rdr.Read())
+       {
+         this._id = rdr.GetInt32(0);
+       }
+
+       if (rdr != null)
+       {
+         rdr.Close();
+       }
+       if (conn != null)
+       {
+         conn.Close();
+       }
+     }
 
     public static void DeleteAll()
     {

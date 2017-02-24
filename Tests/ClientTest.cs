@@ -34,6 +34,22 @@ namespace HairSalon
       Assert.Equal(0, output);
     }
 
+    [Fact]
+    public void Save_OneInstanceofClients_SavesToDatabase()
+    {
+      //Arrange
+      DateTime testDate = new DateTime(2016,4,30);
+      Client firstClient = new Client("Wendy","curly",testDate,1);
+      firstClient.Save();
+
+      //Act
+      List<Client> result = Client.GetAll();
+      List<Client> testList = new List<Client>{firstClient};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
     public void Dispose()
     {
       Client.DeleteAll();
