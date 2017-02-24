@@ -15,7 +15,15 @@
 * Enter this url in desired browser http://localhost:5004
 
 ## Specification
-
+* The program will determine that a stylist input text is entered, not number
+  * Input: "4546"
+  * Output: False
+* The program will take the input name of the stylist type and output it into a dropdown selection menu
+  * Input: "Stylist John", "Stylist Kate"
+  * Output: Select "Stylist John", "Stylist Kate"
+* The program brings the user to a restaurant form for each stylist
+  * Input: "Stylist John"
+  * Output: Add new restaurant in "Stylist John"
 
 ## Known Bugs
 
