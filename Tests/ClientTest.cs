@@ -54,7 +54,7 @@ namespace HairSalon
     public void SaveGetAll_OneInstanceofClients_AssignIdToInstance()
     {
       //Arrange
-      DateTime testDate = new DateTime(1999,6,4);
+      DateTime testDate = new DateTime(2016,4,30);
       Client testClient = new Client("Wendy","curly",testDate,1);
 
       //Act
@@ -72,7 +72,7 @@ namespace HairSalon
     public void Find_ClientInDatabase_ReturnCorrectIdClient()
     {
       //Arrange
-      DateTime testDate = new DateTime(1999,6,4);
+      DateTime testDate = new DateTime(2016,4,30);
       Client testClient = new Client("Wendy","curly",testDate,1);
       testClient.Save();
 
@@ -81,6 +81,24 @@ namespace HairSalon
 
       //Assert
       Assert.Equal (testClient,foundClient);
+    }
+
+    [Fact]
+    public void DeleteThisClient_OneClient_ClientDeleted()
+    {//Arrange
+      DateTime testDate = new DateTime(2016,4,30);
+      Client firstClient = new Client("Wendy","curly",testDate,1);
+      firstClient.Save();
+      Client secondClient = new Client("Lana","straight",testDate,2);
+      secondClient.Save();
+      firstClient.DeleteThisClient();
+      List<Client> outputList = Client.GetAll();
+
+      //Act
+      List<Client> verifyList = new List<Client>{secondClient};
+
+      //Assert
+      Assert.Equal(outputList,verifyList);
     }
 
     public void Dispose()
