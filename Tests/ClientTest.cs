@@ -117,6 +117,21 @@ namespace HairSalon
       Assert.Equal(newName,outputName);
     }
 
+    [Fact]
+    public void UpdateDate_OneClient_NewDate()
+    {
+      //Arrange
+      DateTime testDate = new DateTime(2016,4,30);
+      Client testClient = new Client("Wendys","curly", testDate, 1);
+      testClient.Save();
+      DateTime newDate = new DateTime(2014,7,30);
+      testClient.UpdateDate(newDate);
+      //Act
+      DateTime outputDate = testClient.GetDate();
+      //Assert
+      Assert.Equal(newDate,outputDate);
+    }
+
     public void Dispose()
     {
       Client.DeleteAll();

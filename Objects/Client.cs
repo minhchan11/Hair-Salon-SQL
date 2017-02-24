@@ -123,14 +123,14 @@ namespace HairSalon
        SqlConnection conn = DB.Connection();
        conn.Open();
 
-       SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, request, date, stylist_id) OUTPUT INSERTED.id VALUES (@ClientName, @ClientFavDish, @ClientDate, @ClientStylistId);", conn);
+       SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, request, date, stylist_id) OUTPUT INSERTED.id VALUES (@ClientName, @ClientRequest, @ClientDate, @ClientStylistId);", conn);
 
        SqlParameter nameParameter = new SqlParameter();
        nameParameter.ParameterName = "@ClientName";
        nameParameter.Value = this.GetName();
 
        SqlParameter requestParameter = new SqlParameter();
-       requestParameter.ParameterName = "@ClientFavDish";
+       requestParameter.ParameterName = "@ClientRequest";
        requestParameter.Value = this.GetRequest();
 
        SqlParameter dateParameter = new SqlParameter();
@@ -239,6 +239,81 @@ namespace HairSalon
       {
         conn.Close();
       }
+      }
+    }
+
+    public void UpdateRequest(string newRequest)
+    {
+      if (newRequest != "")
+      {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE clients SET request = @NewRequest OUTPUT INSERTED.request WHERE id=@ClientId;", conn);
+
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewRequest";
+      newNameParameter.Value = newRequest;
+      cmd.Parameters.Add(newNameParameter);
+
+      SqlParameter restaurantIdParameter = new SqlParameter();
+      restaurantIdParameter.ParameterName = "@ClientId";
+      restaurantIdParameter.Value= this.GetId();
+      cmd.Parameters.Add(restaurantIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._request = rdr.GetString(0);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      }
+    }
+
+    public void UpdateDate(DateTime newDate)
+    {
+      DateTime defaultDate = new DateTime(1800,1,1);
+      if (newDate != defaultDate)
+      {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("UPDATE clients SET date = @NewDate OUTPUT INSERTED.date WHERE id=@ClientId;", conn);
+
+        SqlParameter newDateParameter = new SqlParameter();
+        newDateParameter.ParameterName = "@NewDate";
+        newDateParameter.Value= newDate;
+        cmd.Parameters.Add(newDateParameter);
+
+        SqlParameter restaurantIdParameter = new SqlParameter();
+        restaurantIdParameter.ParameterName = "@ClientId";
+        restaurantIdParameter.Value= this.GetId();
+        cmd.Parameters.Add(restaurantIdParameter);
+        SqlDataReader rdr = cmd.ExecuteReader();
+
+        while(rdr.Read())
+        {
+          this._date = rdr.GetDateTime(0);
+        }
+
+        if (rdr != null)
+        {
+          rdr.Close();
+        }
+
+        if (conn != null)
+        {
+          conn.Close();
+        }
       }
     }
 
