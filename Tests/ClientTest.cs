@@ -24,6 +24,16 @@ namespace HairSalon
       Assert.Equal(firstClient,secondClient);
     }
 
+    [Fact]
+    public void GetAll_DatabaseEmptyAtFirst_NoClient()
+    {
+      //Arrange, Act
+      int output = Client.GetAll().Count;
+
+      //Assert
+      Assert.Equal(0, output);
+    }
+
     public void Dispose()
     {
       Client.DeleteAll();

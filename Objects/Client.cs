@@ -85,6 +85,39 @@ namespace HairSalon
       }
     }
 
+      public static List<Client> GetAll()
+       {
+         List<Client> allClients = new List<Client>{};
+
+         SqlConnection conn = DB.Connection();
+         conn.Open();
+
+         SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([opening_date] as datetime) asc;", conn);
+         SqlDataReader rdr = cmd.ExecuteReader();
+
+         while(rdr.Read())
+         {
+           int id = rdr.GetInt32(0);
+           string name = rdr.GetString(1);
+           string request = rdr.GetString(2);
+           DateTime date = rdr.GetDateTime(3);
+           int stylistId = rdr.GetInt32(4);
+           Client newClient = new Client(Name, request, date, stylistId, restaurantId);
+           allClients.Add(newClient);
+         }
+
+         if (rdr != null)
+         {
+           rdr.Close();
+         }
+         if (conn != null)
+         {
+           conn.Close();
+         }
+
+         return allClients;
+       }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
