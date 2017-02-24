@@ -67,6 +67,22 @@ namespace HairSalon
       _stylistId = newStylistId;
     }
 
-
+    public override bool Equals(System.Object otherClient)
+    {
+      if (!(otherClient is Client))
+      {
+        return false;
+      }
+      else
+      {
+        Client newClient = (Client) otherClient;
+        bool idEquality = (this.GetId() == newClient.GetId());
+        bool nameEquality = (this.GetName() == newClient.GetName());
+        bool requestEquality = (this.GetRequest() == newClient.GetRequest());
+        bool dateEquality = (this.GetDate() == newClient.GetDate());
+        bool stylistIdEquality = (this.GetStylistId() == newClient.GetStylistId());
+        return (idEquality && nameEquality && requestEquality && dateEquality && stylistIdEquality);
+      }
+    }
   }
 }
