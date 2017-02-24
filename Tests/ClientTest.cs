@@ -148,6 +148,22 @@ namespace HairSalon
       Assert.Equal(newDate,outputDate);
     }
 
+    [Fact]
+    public void UpdateStylistId_OneClient_NewStylistId()
+    {
+      //Arrange
+      DateTime testDate = new DateTime(2016,4,30);
+      Client testClient = new Client("Wendy","curly", testDate, 1);
+      testClient.Save();
+      int newStylistId = 2;
+      testClient.UpdateStylistId(newStylistId);
+      //Act
+      int outputStylistId = testClient.GetStylistId();
+      //Assert
+      Assert.Equal(newStylistId, outputStylistId);
+    }
+
+
     public void Dispose()
     {
       Client.DeleteAll();

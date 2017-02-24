@@ -219,10 +219,10 @@ namespace HairSalon
       newNameParameter.Value= newName;
       cmd.Parameters.Add(newNameParameter);
 
-      SqlParameter restaurantIdParameter = new SqlParameter();
-      restaurantIdParameter.ParameterName = "@ClientId";
-      restaurantIdParameter.Value= this.GetId();
-      cmd.Parameters.Add(restaurantIdParameter);
+      SqlParameter ClientIdParameter = new SqlParameter();
+      ClientIdParameter.ParameterName = "@ClientId";
+      ClientIdParameter.Value= this.GetId();
+      cmd.Parameters.Add(ClientIdParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -256,10 +256,10 @@ namespace HairSalon
       newNameParameter.Value = newRequest;
       cmd.Parameters.Add(newNameParameter);
 
-      SqlParameter restaurantIdParameter = new SqlParameter();
-      restaurantIdParameter.ParameterName = "@ClientId";
-      restaurantIdParameter.Value= this.GetId();
-      cmd.Parameters.Add(restaurantIdParameter);
+      SqlParameter ClientIdParameter = new SqlParameter();
+      ClientIdParameter.ParameterName = "@ClientId";
+      ClientIdParameter.Value= this.GetId();
+      cmd.Parameters.Add(ClientIdParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -294,10 +294,10 @@ namespace HairSalon
         newDateParameter.Value= newDate;
         cmd.Parameters.Add(newDateParameter);
 
-        SqlParameter restaurantIdParameter = new SqlParameter();
-        restaurantIdParameter.ParameterName = "@ClientId";
-        restaurantIdParameter.Value= this.GetId();
-        cmd.Parameters.Add(restaurantIdParameter);
+        SqlParameter ClientIdParameter = new SqlParameter();
+        ClientIdParameter.ParameterName = "@ClientId";
+        ClientIdParameter.Value= this.GetId();
+        cmd.Parameters.Add(ClientIdParameter);
         SqlDataReader rdr = cmd.ExecuteReader();
 
         while(rdr.Read())
@@ -316,6 +316,45 @@ namespace HairSalon
         }
       }
     }
+
+
+    public void UpdateStylistId(int newStylistId)
+    {
+      if (newStylistId != 0)
+      {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("UPDATE clients SET stylist_id = @NewStylistId OUTPUT INSERTED.stylist_id WHERE id=@ClientId;", conn);
+
+        SqlParameter newStylistIdParameter = new SqlParameter();
+        newStylistIdParameter.ParameterName = "@NewStylistId";
+        newStylistIdParameter.Value= newStylistId.ToString();
+        cmd.Parameters.Add(newStylistIdParameter);
+
+        SqlParameter ClientIdParameter = new SqlParameter();
+        ClientIdParameter.ParameterName = "@ClientId";
+        ClientIdParameter.Value= this.GetId();
+        cmd.Parameters.Add(ClientIdParameter);
+        SqlDataReader rdr = cmd.ExecuteReader();
+
+        while(rdr.Read())
+        {
+          this._stylistId = rdr.GetInt32(0);
+        }
+
+        if (rdr != null)
+        {
+          rdr.Close();
+        }
+
+        if (conn != null)
+        {
+          conn.Close();
+        }
+      }
+    }
+
 
     public void DeleteThisClient()
     {
