@@ -68,6 +68,21 @@ namespace HairSalon
       Assert.Equal(testId, result);
     }
 
+    [Fact]
+    public void Find_ClientInDatabase_ReturnCorrectIdClient()
+    {
+      //Arrange
+      DateTime testDate = new DateTime(1999,6,4);
+      Client testClient = new Client("Wendy","curly",testDate,1);
+      testClient.Save();
+
+      //Act
+      Client foundClient = Client.Find(testClient.GetId());
+
+      //Assert
+      Assert.Equal (testClient,foundClient);
+    }
+
     public void Dispose()
     {
       Client.DeleteAll();
