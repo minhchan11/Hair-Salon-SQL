@@ -92,7 +92,7 @@ namespace HairSalon
          SqlConnection conn = DB.Connection();
          conn.Open();
 
-         SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([opening_date] as datetime) asc;", conn);
+         SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([date] as datetime) asc;", conn);
          SqlDataReader rdr = cmd.ExecuteReader();
 
          while(rdr.Read())
@@ -102,7 +102,7 @@ namespace HairSalon
            string request = rdr.GetString(2);
            DateTime date = rdr.GetDateTime(3);
            int stylistId = rdr.GetInt32(4);
-           Client newClient = new Client(Name, request, date, stylistId, restaurantId);
+           Client newClient = new Client(name, request, date, stylistId, id);
            allClients.Add(newClient);
          }
 
