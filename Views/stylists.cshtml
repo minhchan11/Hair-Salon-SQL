@@ -1,0 +1,60 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+
+<div class="well">
+  <h2>Stylist Roster</h2>
+  <div class="row space">
+    <div class="col-sm-6 col-sm-offset-3">
+      <form action="/stylists/search" method="post" id="search">
+        <div id="imaginary_container">
+          <div class="input-group stylish-input-group">
+            <input type="text" name="search-stylist" id="search-stylist" class="form-control"  placeholder="Search" >
+            <span class="input-group-addon">
+              <button type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  @if(@Model.Count== 0)
+  {
+    <h5> Your stylist list is empty </h5>
+  }
+  else
+  {
+    <ol>
+    @foreach (var stylist in @Model)
+    {
+      <li><a href="/stylists/@stylist.GetId()"> @stylist.GetName() </a></li>
+    }
+    </ol>
+  }
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">Add a new stylist:</div>
+  <div class="panel-body">
+    <div class="form-group row">
+      <form action="/stylists/new" method="post">
+        <label for="stylist" class="col-2">Stylist Name:</label>
+        <input type="text" name="stylist" id="stylist" class="form-control col-8">
+    </div>
+      <button type="submit" name="button" class="btn btn-md btn-info">Add New Stylist to the Roster</button>
+  </div>
+</div>
+</form>
+
+<form action="/stylists/deleted" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" name="button" class="btn btn-md btn-danger">Delete All Stylists</button>
+</form>
+
+<div class="row">
+  <a href="/clients">See all clients</a><br>
+  <a href="/">Home Page</a>
+</div>

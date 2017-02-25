@@ -1,0 +1,56 @@
+@{ Layout="Shared/_Layout.cshtml"; }
+
+
+<h3>Booking schedules for Stylist @Model["stylist"].GetName():</h3>
+
+<div class="panel panel-warning">
+    <div class="panel-heading">Client List for Stylist @Model["stylist"].GetName()</div>
+    <div class="panel-body">
+        @if (@Model["clients"].Count == 0)
+        {
+        <h4> No clients for this stylist has been added </h4>
+      }
+      else
+      {
+        <ol>@foreach (var client in @Model["clients"]) {
+            <li>Name of Client: @client.GetName()</li>
+            <ul>
+                <li>Date Booked: @client.GetDate().ToShortDateString()</li>
+                <li>Client Request: @client.GetRequest()</li>
+            </ul>
+            }
+        </ol>
+        }
+    </div>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">Edit information for @Model["stylist"].GetName()</div>
+    <div class="panel-body">
+      <form action="/stylist/edit/@Model["stylist"].GetId()" method="post">
+        <input type="hidden" name="_method" value="PATCH">
+        <input name="stylist-id" type="hidden" value="@Model["stylist"].GetId()">
+      <div class="form-group">
+        <label for="stylist-name" class="col-2">Edit Name</label>
+        <input id="stylist-name" name="stylist-name" type="text" class="form-control col-10">
+      </div>
+          <button type="submit" class="btn btn-lg btn-info">Change Name for this Stylist</button>
+    </div>
+</div>
+</form>
+
+<form action="/stylist/@Model["stylist"].GetId()/cleared" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" name="button" class="btn btn-block btn-warning">Delete All Clients in this Stylist</button>
+</form>
+<br>
+<form action="/stylist/@Model["stylist"].GetId()/deleted" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" name="button" class="btn btn-block btn-danger">Delete this Stylist</button>
+</form>
+
+<div class="row">
+    <a href="/clients">See all clients</a><br>
+    <a href="/stylists">See all stylists</a><br>
+    <a href="/">Home Page</a>
+</div>

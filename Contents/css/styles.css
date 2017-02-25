@@ -1,0 +1,140 @@
+.header {
+  width: 100%;
+  height: 140px;
+}
+
+.logo {
+  height: 120px;
+  position: absolute;
+  left: 45%;
+  top: 10px;
+}
+
+.index-intro {
+  margin-top: 5%;
+  height: 500px;
+  width: 100%;
+  background-size: 60%;
+  background-repeat: no-repeat;
+  text-align: right;
+}
+
+.intro-text {
+  width: 35%;
+  float: right;
+  padding-top: 5%;
+}
+
+.divider {
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+.stylish-input-group .form-control{
+	border-right:0;
+	box-shadow:0 0 0;
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+
+.space {
+  margin-bottom: 40px;
+}
+
+.index-links {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 2%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.clients-background
+{
+  background-image: url(/Contents/img/clients_link.jpg);
+  background-size: cover;
+}
+
+.clients-link {
+  display: table;
+  text-align: center;
+}
+
+#clients-link {
+  height: 150px;
+  width: 375px;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 45px;
+  line-height: normal;
+  color: rgb(255, 224, 249);
+  background-color: rgba(145, 138, 150, 0.8);
+  text-align: center;
+}
+
+.index-links a:hover {
+  text-decoration: none;
+}
+.stylists-background
+{
+  background-image: url(/Contents/img/stylists_link.jpg);
+  background-size: cover;}
+
+.stylists-link {
+  display: table;
+  text-align: center;
+}
+
+#stylists-link {
+  height: 150px;
+  width: 375px;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 45px;
+  line-height: normal;
+  color: rgb(255, 224, 249);
+  background-color: rgba(145, 138, 150, 0.8);
+  text-align: center;
+}
+
+body{
+  font-family: 'Arapey', serif;
+  font-size: 15px;
+}
+
+h2{
+  font-size: 32px;
+  color: rgba(105, 79, 122,0.5);
+  text-align: center;
+}
+
+.footer
+{
+  hight:10%;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.btn {
+  font-size: 15px;
+}
+
+input{
+  font-size: 15px;
+}

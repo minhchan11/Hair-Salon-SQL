@@ -12,6 +12,7 @@ namespace HairSalon
     private DateTime _date;
     private int _stylistId;
 
+    //Object constructor
     public Client(string Name, string Request, DateTime Date, int StylistId, int Id = 0)
     {
       _id = Id;
@@ -21,11 +22,12 @@ namespace HairSalon
       _stylistId = StylistId;
     }
 
+
+    //Getters and Setters for attributes
     public int GetId()
     {
       return _id;
     }
-
     public void SetId(int newId)
     {
       _id = newId;
@@ -67,6 +69,7 @@ namespace HairSalon
       _stylistId = newStylistId;
     }
 
+    //Override Equals for SQL
     public override bool Equals(System.Object otherClient)
     {
       if (!(otherClient is Client))
@@ -85,39 +88,7 @@ namespace HairSalon
       }
     }
 
-    public static List<Client> GetAll()
-     {
-       List<Client> allClients = new List<Client>{};
-
-       SqlConnection conn = DB.Connection();
-       conn.Open();
-
-       SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([date] as datetime) asc;", conn);
-       SqlDataReader rdr = cmd.ExecuteReader();
-
-       while(rdr.Read())
-       {
-         int id = rdr.GetInt32(0);
-         string name = rdr.GetString(1);
-         string request = rdr.GetString(2);
-         DateTime date = rdr.GetDateTime(3);
-         int stylistId = rdr.GetInt32(4);
-         Client newClient = new Client(name, request, date, stylistId, id);
-         allClients.Add(newClient);
-       }
-
-       if (rdr != null)
-       {
-         rdr.Close();
-       }
-       if (conn != null)
-       {
-         conn.Close();
-       }
-
-       return allClients;
-     }
-
+    //Save new instance to SQL
      public void Save()
      {
        SqlConnection conn = DB.Connection();
@@ -163,6 +134,42 @@ namespace HairSalon
        }
      }
 
+    //Output list from SQL
+    public static List<Client> GetAll()
+     {
+       List<Client> allClients = new List<Client>{};
+
+       SqlConnection conn = DB.Connection();
+       conn.Open();
+
+       SqlCommand cmd = new SqlCommand("SELECT * FROM clients ORDER BY cast([date] as datetime) asc;", conn);
+       SqlDataReader rdr = cmd.ExecuteReader();
+
+       while(rdr.Read())
+       {
+         int id = rdr.GetInt32(0);
+         string name = rdr.GetString(1);
+         string request = rdr.GetString(2);
+         DateTime date = rdr.GetDateTime(3);
+         int stylistId = rdr.GetInt32(4);
+         Client newClient = new Client(name, request, date, stylistId, id);
+         allClients.Add(newClient);
+       }
+
+       if (rdr != null)
+       {
+         rdr.Close();
+       }
+       if (conn != null)
+       {
+         conn.Close();
+       }
+
+       return allClients;
+    }
+
+
+    //Find instance from SQL
     public static Client Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -205,6 +212,81 @@ namespace HairSalon
       return foundClient;
     }
 
+    public static List<Client> Search(string match)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM clients WHERE name = @ClientName;", conn);
+
+      SqlParameter idParameter = new SqlParameter();
+      idParameter.ParameterName = "@ClientName";
+      idParameter.Value = match;
+      cmd.Parameters.Add(idParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Client> clientMatches = new List<Client>{};
+
+      while (rdr.Read())
+      {
+        int foundId = rdr.GetInt32(0);
+        string foundName = rdr.GetString(1);
+        string foundRequest = rdr.GetString(2);
+        DateTime foundDate = rdr.GetDateTime(3);
+        int foundStylistId = rdr.GetInt32(4);
+        Client foundClient = new Client(foundName,foundRequest,foundDate,foundStylistId, foundId);
+        clientMatches.Add(foundClient);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return clientMatches;
+    }
+
+      public List<Feedback> GetClientFeedback()
+      {
+        List<Feedback> allFeedbacks = new List<Feedback>{};
+
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("SELECT * FROM feedbacks WHERE client_id = @ClientId;", conn);
+
+        SqlParameter clientIdParameter = new SqlParameter();
+        clientIdParameter.ParameterName = "@ClientId";
+        clientIdParameter.Value = this.GetId().ToString();
+        cmd.Parameters.Add(clientIdParameter);
+
+        SqlDataReader rdr = cmd.ExecuteReader();
+
+        while(rdr.Read())
+        {
+          int id = rdr.GetInt32(0);
+          string preference = rdr.GetString(1);
+          int clientId = rdr.GetInt32(2);
+          Feedback newFeedback = new Feedback(preference, clientId, id);
+          allFeedbacks.Add(newFeedback);
+        }
+
+        if (rdr != null)
+        {
+          rdr.Close();
+        }
+        if (conn != null)
+        {
+          conn.Close();
+        }
+        return allFeedbacks;
+      }
+
+    //Update name method for each client
     public void UpdateName(string newName)
     {
       if (newName != "")
@@ -242,6 +324,7 @@ namespace HairSalon
       }
     }
 
+    //Update request method for each client
     public void UpdateRequest(string newRequest)
     {
       if (newRequest != "")
@@ -279,6 +362,7 @@ namespace HairSalon
       }
     }
 
+    //Update request date for each client
     public void UpdateDate(DateTime newDate)
     {
       DateTime defaultDate = new DateTime(1800,1,1);
@@ -317,7 +401,7 @@ namespace HairSalon
       }
     }
 
-
+    //Update stylist method for each client
     public void UpdateStylistId(int newStylistId)
     {
       if (newStylistId != 0)
@@ -356,6 +440,7 @@ namespace HairSalon
     }
 
 
+    //Delete method for each client
     public void DeleteThisClient()
     {
       SqlConnection conn = DB.Connection();
@@ -369,6 +454,7 @@ namespace HairSalon
       cmd.ExecuteNonQuery();
     }
 
+    //Delete method for all clients
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

@@ -163,10 +163,10 @@ namespace HairSalon
       Assert.Equal(newStylistId, outputStylistId);
     }
 
-
     public void Dispose()
     {
       Client.DeleteAll();
+      Feedback.DeleteAll();
     }
   }
 }
